@@ -4,8 +4,12 @@ const postSchema = new mongoose.Schema({
         type:String
     },
     image:{
-        public_id:String,
-        url:String,
+        public_id:{
+            type:String,
+        },
+        url:{
+            type:String,
+        },
     },
     owner:{
         type:mongoose.Schema.Types.ObjectId,
