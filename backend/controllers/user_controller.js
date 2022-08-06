@@ -53,3 +53,39 @@ module.exports.login = async (req,res)=>{
         })
     }
 }
+
+
+exports.followUser = async (req,res)=>{
+    try {
+        const userToFollow = await User.findById(req.params.id);
+        const loggedInUser = await User.findById(req.user._id);
+        if(!userToFollow){
+            return res.json(404,{
+                message:"User not found"
+            })
+        }
+        if(loggedInUser.following.includes(userToFollow._id)){
+            const indexFollowing = loggedInUser.following.indexOf(userToFollow._id);
+            loggedInUser.following.splice(indexFollowing,1);
+            const indexFollowers = userToFollow.followers.indexOf(loggedInUser._id);
+            userToFollow.followers.splice(indexFollowers,1);
+            await loggedInUser.save();
+            await userToFollow.save();
+            
+            return res.json(200,{
+                message:"User unfollowed"
+            })
+        }
+        loggedInUser.following.push(userToFollow._id);
+        userToFollow.followers.push(loggedInUser._id);
+        await loggedInUser.save();
+        await userToFollow.save();    
+        return res.json(200,{
+            message:"Following user successfully"
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}
