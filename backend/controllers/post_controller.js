@@ -52,3 +52,31 @@ exports.likeAndUnlikePost = async (req,res)=>{
         })
     }
 }
+
+exports.deletePost = async (req,res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+        const user = await User.findById(req.user._id)
+        if(!post){
+            return res.json(400,{
+                message:"Post not found"
+            })
+        }
+        if(post.owner._id.toString() !== req.user._id.toString()){
+            return res.json(400,{
+                mesage:"Unauthorized action"
+            })
+        }
+        await post.remove();
+        user.posts.pop(post._id)
+        await user.save()
+        return res.json(200,{
+            message:"Post deleted successfully",
+            post
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}
