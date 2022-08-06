@@ -24,3 +24,31 @@ exports.createPost = async (req,res)=>{
         })
     }
 }
+
+exports.likeAndUnlikePost = async (req,res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+        if(!post){
+            return res.json(404,{
+                message:"post not found"
+            })
+        }
+        if(post.likes.includes(req.user._id)){
+            const index = post.likes.indexOf(req.user._id);
+            post.likes.splice(index,1);
+            await post.save();
+            return res.json(200,{
+                message:"Post unliked"
+            })
+        }
+        post.likes.push(req.user._id);
+        post.save()
+        return res.json(200,{
+            message:"Post liked"
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}
