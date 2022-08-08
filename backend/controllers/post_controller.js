@@ -80,3 +80,23 @@ exports.deletePost = async (req,res)=>{
         })
     }
 }
+
+exports.getPostsOfFollowing = async(req,res)=>{
+    try {
+        const user = await User.findById(req.user._id).populate('following','posts');
+        // const user = await User.findById(req.user._id);
+        // const posts = await Post.find({
+        //     owner:{
+        //         $in:user.following,
+        //     }
+        // })
+        return res.json(200,{
+            following:user.following
+            // posts
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}

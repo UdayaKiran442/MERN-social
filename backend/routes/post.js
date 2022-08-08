@@ -5,4 +5,5 @@ const isAuthenticated = require('../middlewares/auth')
 router.post('/posts/upload',isAuthenticated.isAuthenticated,postController.createPost);
 router.get('/post/:id',isAuthenticated.isAuthenticated,postController.likeAndUnlikePost);
 router.delete('/post/:id',isAuthenticated.isAuthenticated,postController.deletePost);
+router.get("/posts/following",isAuthenticated.isAuthenticated,postController.getPostsOfFollowing);
 module.exports = router;
