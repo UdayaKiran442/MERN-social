@@ -9,4 +9,5 @@ router.get('/logout',userController.logOut);
 router.put('/update/password',isAuthenticated.isAuthenticated,userController.updatePassword);
 router.put('/update/profile',isAuthenticated.isAuthenticated,userController.updateProfile);
 router.delete('/delete/profile',isAuthenticated.isAuthenticated,userController.deleteProfile);
+router.get('/myprofile',isAuthenticated.isAuthenticated,userController.myProfile);
 module.exports = router

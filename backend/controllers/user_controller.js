@@ -162,7 +162,10 @@ exports.updateProfile = async (req,res)=>{
 exports.deleteProfile = async (req,res)=>{
     try {
         const user = await User.findById(req.user._id);
-        const posts = user.posts
+        const posts = user.posts;
+        const userId = user._id
+        const followers = user.followers;
+        const following = user.following;
         await user.remove();
         res.status(200).cookie("token",null,{
             expires:new Date(Date.now()),
@@ -173,6 +176,19 @@ exports.deleteProfile = async (req,res)=>{
             const post = await Post.findById(posts[i]);
             post.remove();
         }
+        for(let i=0;i<followers.length;i++){
+            const follower = await User.findById(followers[i]);
+            const index = follower.following.indexOf(userId);
+            follower.following.splice(index,1);
+            await follower.save();
+        }
+        for(let i=0;i<following.length;i++){
+            const follows = await User.findById(followers[i]);
+            const index = follows.following.indexOf(userId);
+            follows.following.splice(index,1);
+            await follows.save();
+        }
+
         res.json(200,{
             message:"Profile deleted"
         })
@@ -182,3 +198,16 @@ exports.deleteProfile = async (req,res)=>{
         })
     }
 }
+
+exports.myProfile = async (req,res)=>{
+    try {
+        const user = await User.findById(req.user._id).populate('posts');
+        return res.json(200,{
+            user
+        })
+    } catch (error) {
+        res.json(500,{
+            message:error.message
+        })
+    }
+} 
