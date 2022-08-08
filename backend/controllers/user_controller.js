@@ -103,3 +103,57 @@ exports.followUser = async (req,res)=>{
         })
     }
 }
+
+exports.updatePassword = async (req,res)=>{
+    try {
+        const user = await User.findById(req.user._id).select('+password');
+        const {oldPassword,newPassword} = req.body;
+        const isMatch = await user.matchPassword(oldPassword);
+        if(!oldPassword || !newPassword){
+            return res.json(400,{
+                message:"Please provide old password || new password"
+            })
+        }
+        if(!isMatch){
+            return res.json(404,{
+                message:"Wrong old password",
+            })
+        }
+        user.password = newPassword;
+        await user.save();
+        return res.json({
+            message:"Password updated succesfully"
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}
+
+exports.updateProfile = async (req,res)=>{
+    try {
+        const user = await User.findById(req.user._id);
+        const {name,email} = req.body
+        if(!name || !email){
+            return res.json(400,{
+                message:"Please enter name or email"
+            })
+        }
+        if(name){
+            user.name = name;
+        }
+        if(email){
+            user.email = email;
+        }
+        //USER avatar TODO
+        user.save();
+        return res.json(200,{
+            message:"Profile updated"
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}

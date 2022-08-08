@@ -100,3 +100,28 @@ exports.getPostsOfFollowing = async(req,res)=>{
         })
     }
 }
+
+exports.updatePost = async (req,res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+        if(!post){
+            return res.json(404,{
+                message:"Post not found"
+            })
+        }
+        if(req.user._id.toString() !== post.owner._id.toString()){
+            return res.json(401,{
+                message:"UnAuthorized"
+            })
+        }
+        post.caption = req.body.caption;
+        await post.save();
+        return res.json(200,{
+            message:"Post updated succesfully"
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}

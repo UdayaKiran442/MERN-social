@@ -6,4 +6,5 @@ router.post('/posts/upload',isAuthenticated.isAuthenticated,postController.creat
 router.get('/post/:id',isAuthenticated.isAuthenticated,postController.likeAndUnlikePost);
 router.delete('/post/:id',isAuthenticated.isAuthenticated,postController.deletePost);
 router.get("/posts/following",isAuthenticated.isAuthenticated,postController.getPostsOfFollowing);
+router.put('/update/posts/:id',isAuthenticated.isAuthenticated,postController.updatePost);
 module.exports = router;
