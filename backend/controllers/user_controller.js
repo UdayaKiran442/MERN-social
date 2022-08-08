@@ -54,6 +54,20 @@ module.exports.login = async (req,res)=>{
     }
 }
 
+exports.logOut = (req,res)=>{
+    try {
+        return res.status(200).cookie("token",null,{
+            expires:new Date(Date.now()),
+            httpOnly:true
+        }).json({
+            message:"Log out successful"
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}
 
 exports.followUser = async (req,res)=>{
     try {

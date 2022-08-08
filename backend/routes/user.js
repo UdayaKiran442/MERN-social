@@ -4,5 +4,6 @@ const userController = require('../controllers/user_controller');
 const isAuthenticated = require('../middlewares/auth')
 router.post('/register',userController.register);
 router.get('/login',userController.login);
-router.get('/follow/:id',isAuthenticated.isAuthenticated,userController.followUser)
+router.get('/follow/:id',isAuthenticated.isAuthenticated,userController.followUser);
+router.get('/logout',userController.logOut);
 module.exports = router
