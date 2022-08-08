@@ -10,4 +10,6 @@ router.put('/update/password',isAuthenticated.isAuthenticated,userController.upd
 router.put('/update/profile',isAuthenticated.isAuthenticated,userController.updateProfile);
 router.delete('/delete/profile',isAuthenticated.isAuthenticated,userController.deleteProfile);
 router.get('/myprofile',isAuthenticated.isAuthenticated,userController.myProfile);
+router.get('/userprofile/:id',isAuthenticated.isAuthenticated,userController.getUserProfile);
+router.get('/allusers',isAuthenticated.isAuthenticated,userController.getAllUsers);
 module.exports = router

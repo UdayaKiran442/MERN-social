@@ -211,3 +211,34 @@ exports.myProfile = async (req,res)=>{
         })
     }
 } 
+
+exports.getUserProfile = async (req,res)=>{
+    try {
+        const user = await User.findById(req.params.id).populate('posts');
+        if(!user){
+            return res.json(404,{
+                message:"User not found"
+            })
+        }
+        return res.json(200,{
+            user
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}
+
+exports.getAllUsers = async (req,res)=>{
+    try {
+        const user = await User.find({});
+        return res.json(200,{
+            user
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}
