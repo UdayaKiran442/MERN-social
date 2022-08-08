@@ -1,3 +1,4 @@
+const Post = require('../models/post');
 const User = require('../models/user');
 module.exports.register = async (req,res)=>{
     try {
@@ -150,6 +151,30 @@ exports.updateProfile = async (req,res)=>{
         user.save();
         return res.json(200,{
             message:"Profile updated"
+        })
+    } catch (error) {
+        return res.json(500,{
+            message:error.message
+        })
+    }
+}
+
+exports.deleteProfile = async (req,res)=>{
+    try {
+        const user = await User.findById(req.user._id);
+        const posts = user.posts
+        await user.remove();
+        res.status(200).cookie("token",null,{
+            expires:new Date(Date.now()),
+            httpOnly:true
+        })
+        //Delete all posts of the user
+        for(let i=0;i<posts.length;i++){
+            const post = await Post.findById(posts[i]);
+            post.remove();
+        }
+        res.json(200,{
+            message:"Profile deleted"
         })
     } catch (error) {
         return res.json(500,{

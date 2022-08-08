@@ -8,4 +8,5 @@ router.get('/follow/:id',isAuthenticated.isAuthenticated,userController.followUs
 router.get('/logout',userController.logOut);
 router.put('/update/password',isAuthenticated.isAuthenticated,userController.updatePassword);
 router.put('/update/profile',isAuthenticated.isAuthenticated,userController.updateProfile);
+router.delete('/delete/profile',isAuthenticated.isAuthenticated,userController.deleteProfile);
 module.exports = router
