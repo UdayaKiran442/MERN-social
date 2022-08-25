@@ -125,3 +125,75 @@ exports.updatePost = async (req,res)=>{
         })
     }
 }
+
+exports.commentOnPost = async(req,res)=>{
+    try {
+        const post = await Post.findById(req.params.id)
+        if(!post){
+            return res.json(400,{
+                success:false,
+                message:"Post not found"
+            })
+        }
+        let commentExists = -1;
+        //Checking if comment already exists
+        post.comments.forEach((item,index)=>{
+            if(item.user._id.toString() === req.user._id.toString()){
+                commentExists = index;
+            }
+        })
+        if(commentExists !== -1){
+            post.comments[commentExists].comment = req.body.comment 
+            await post.save();
+            return res.json(200,{
+                success:true,
+                message:"Comment updated succesfully"
+            })
+        }
+        else{
+            post.comments.push({
+                user:req.user._id,
+                comment:req.body.comment
+            })
+            await post.save();
+            return res.json(200,{
+                success:true,
+                message:"Comment added succesfully"
+            })
+        }
+    } catch (error) {
+        return res.json(500,{
+            message:error.mesage
+        })
+    }
+}
+
+exports.deleteComment = async (req,res)=>{
+    try {
+        const post = await Post.findById(req.params.id);
+        if(!post){
+            return res.json(400,{
+                success:false,
+                message:"Post not found"
+            })
+        }
+        if(post.owner.toString() === req.user._id.toString()){}
+        else{
+            post.comments.forEach((item,index)=>{
+                if(item.user.toString() === req.user._id.toString()){
+                    return post.comments.splice(index,1);
+                }
+            })
+            await post.save();
+            return res.json(200,{
+                message:"Comment deleted",
+                success:true
+            })
+        }
+    } catch (error) {
+        return res.json(500,{
+            success:false,
+            message:error.mesage
+        })
+    }
+}
