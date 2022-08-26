@@ -12,4 +12,6 @@ router.delete('/delete/profile',isAuthenticated.isAuthenticated,userController.d
 router.get('/myprofile',isAuthenticated.isAuthenticated,userController.myProfile);
 router.get('/userprofile/:id',isAuthenticated.isAuthenticated,userController.getUserProfile);
 router.get('/allusers',isAuthenticated.isAuthenticated,userController.getAllUsers);
+router.post('/forgot/password',userController.forgotPassword);
+router.put('/password/reset/:token',userController.resetPassword);
 module.exports = router
