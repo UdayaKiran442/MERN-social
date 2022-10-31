@@ -35,3 +35,21 @@ export const loadUser = () => async (dispatch) => {
     });
   }
 };
+
+export const getFollowingPosts = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "postsOfFollowingRequests",
+    });
+    const { data } = await apiInstance.get("/posts/following");
+    dispatch({
+      type: "postsOfFollowingSuccess",
+      payload: data.posts,
+    });
+  } catch (error) {
+    dispatch({
+      type: "postsOfFollowingFailure",
+      payload: error.response.data.message,
+    });
+  }
+};
