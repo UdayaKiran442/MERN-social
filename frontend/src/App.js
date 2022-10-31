@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Routes, Route } from "react-router-dom";
 import "./App.css";
 import Header from "./Components/Header/Header";
@@ -10,9 +10,10 @@ function App() {
   useEffect(() => {
     dispatch(loadUser());
   }, []);
+  const { isAuthenticated } = useSelector((state) => state.user);
   return (
     <div className="App">
-      <Header />
+      {isAuthenticated && <Header />}
       <Routes>
         <Route path="/" element={<Login />} />
       </Routes>
