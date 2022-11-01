@@ -17,3 +17,21 @@ export const likePost = (id) => async (dispatch) => {
     });
   }
 };
+
+export const addCommentOnPost = (id, comment) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "addCommentRequest",
+    });
+    const { data } = await apiInstance.put(`/post/comment/${id}`, { comment });
+    dispatch({
+      type: "addCommentSuccess",
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: "addCommentFailure",
+      payload: error.response.data.message,
+    });
+  }
+};

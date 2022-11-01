@@ -11,7 +11,7 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { likePost } from "../../Actions/post";
+import { addCommentOnPost, likePost } from "../../Actions/post";
 import { useEffect } from "react";
 import User from "../User/User";
 // import { getFollowingPosts } from "../../Actions/user";
@@ -39,7 +39,9 @@ const Post = ({
     dispatch(likePost(postId));
     // dispatch(getFollowingPosts());
   };
-  const addCommentHandler = () => {};
+  const addCommentHandler = () => {
+    dispatch(addCommentOnPost(postId, commentValue));
+  };
   useEffect(() => {
     if (error) {
       alert(error);
