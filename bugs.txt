@@ -1,0 +1,6 @@
+Bugs frontend:
+Likes count not reflecting on click of like symbol
+need to implement proper alert messaging feature
+
+Bugs backend:
+reset password not working
