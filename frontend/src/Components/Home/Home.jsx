@@ -43,8 +43,9 @@ export const Home = () => {
             )}
           </div>
           <div className="homeright">
-            {users.map((user, index) => (
+            {users?.map((user, index) => (
               <User
+                key={user._id}
                 userId={user._id}
                 name={user.name}
                 avatar={

@@ -10,6 +10,8 @@ import {
   DeleteOutline,
 } from "@mui/icons-material";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { likePost } from "../../Actions/post";
 const Post = ({
   postId,
   caption,
@@ -22,9 +24,11 @@ const Post = ({
   isDelete = false,
   isAccount = false,
 }) => {
+  const dispatch = useDispatch();
   const [liked, setLiked] = useState(false);
   const handleLike = () => {
     setLiked(!liked);
+    dispatch(likePost(postId));
   };
   return (
     <div className="post">
@@ -64,7 +68,7 @@ const Post = ({
           margin: "1vmax 2vmax",
         }}
       >
-        <Typography>5 likes</Typography>
+        <Typography>{likes.length} likes</Typography>
       </button>
       <div className="postFooter">
         <Button onClick={handleLike}>
