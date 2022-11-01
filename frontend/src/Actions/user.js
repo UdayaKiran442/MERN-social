@@ -53,3 +53,21 @@ export const getFollowingPosts = () => async (dispatch) => {
     });
   }
 };
+
+export const getAllUsers = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "allUsersRequest",
+    });
+    const { data } = await apiInstance.get("/allusers");
+    dispatch({
+      type: "allUsersSuccess",
+      payload: data.user,
+    });
+  } catch (error) {
+    dispatch({
+      type: "allUsersFailure",
+      payload: error.response.data.message,
+    });
+  }
+};

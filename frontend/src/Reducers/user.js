@@ -66,3 +66,20 @@ export const postOfFollowingReducer = createReducer(initialState, {
     state.error = null;
   },
 });
+
+export const allUsersReducers = createReducer(initialState, {
+  allUsersRequests: (state) => {
+    state.loading = true;
+  },
+  allUsersSuccess: (state, action) => {
+    state.loading = false;
+    state.users = action.payload;
+  },
+  allUsersFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+  clearErrors: (state) => {
+    state.error = null;
+  },
+});
