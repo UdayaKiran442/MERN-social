@@ -10,8 +10,10 @@ import {
   DeleteOutline,
 } from "@mui/icons-material";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { likePost } from "../../Actions/post";
+import { useEffect } from "react";
+// import { getFollowingPosts } from "../../Actions/user";
 const Post = ({
   postId,
   caption,
@@ -26,10 +28,29 @@ const Post = ({
 }) => {
   const dispatch = useDispatch();
   const [liked, setLiked] = useState(false);
+  const { error, message } = useSelector((state) => state.like);
+  const { user } = useSelector((state) => state.user);
   const handleLike = () => {
     setLiked(!liked);
     dispatch(likePost(postId));
+    // dispatch(getFollowingPosts());
   };
+  useEffect(() => {
+    if (error) {
+      alert(error);
+    }
+    if (message) {
+      alert(message);
+    }
+  }, [error, message]);
+  useEffect(() => {
+    likes.forEach((item) => {
+      if (item._id === user._id) {
+        setLiked(true);
+      }
+    });
+  }, [likes, user._id]);
+
   return (
     <div className="post">
       <div className="postHeader">
