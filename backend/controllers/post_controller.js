@@ -177,6 +177,25 @@ exports.deleteComment = async (req, res) => {
       });
     }
     if (post.owner.toString() === req.user._id.toString()) {
+      if (req.body.commentId === undefined) {
+        return res.status(400).json({
+          success: false,
+          message: "Comment Id is required",
+        });
+      }
+
+      post.comments.forEach((item, index) => {
+        if (item._id.toString() === req.body.commentId.toString()) {
+          return post.comments.splice(index, 1);
+        }
+      });
+
+      await post.save();
+
+      return res.status(200).json({
+        success: true,
+        message: "Selected Comment has deleted",
+      });
     } else {
       post.comments.forEach((item, index) => {
         if (item.user.toString() === req.user._id.toString()) {
