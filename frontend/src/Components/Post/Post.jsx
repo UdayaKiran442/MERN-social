@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addCommentOnPost, likePost } from "../../Actions/post";
 import { useEffect } from "react";
 import User from "../User/User";
+import CommentCard from "../CommentCard/CommentCard";
 // import { getFollowingPosts } from "../../Actions/user";
 const Post = ({
   postId,
@@ -146,6 +147,23 @@ const Post = ({
               Add comment
             </Button>
           </form>
+          {/* comment card */}
+          {comments.length > 0 ? (
+            comments.map((item) => (
+              <CommentCard
+                key={item._id}
+                userId={item.user._id}
+                name={item.user.name}
+                avatar={item.user.avatar.url}
+                comment={item.comment}
+                commentId={item._id}
+                isAccount={isAccount}
+                postId={postId}
+              />
+            ))
+          ) : (
+            <Typography>Not comments yet</Typography>
+          )}
         </div>
       </Dialog>
     </div>
