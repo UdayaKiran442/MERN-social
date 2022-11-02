@@ -19,6 +19,7 @@ const CommentCard = ({
   const dispatch = useDispatch();
   const deleteCommentHandler = () => {
     dispatch(deleteCommentOnPost(postId, commentId));
+    window.location.reload(true);
   };
   return (
     <div className="commentUser">

@@ -42,6 +42,7 @@ const Post = ({
   };
   const addCommentHandler = () => {
     dispatch(addCommentOnPost(postId, commentValue));
+    window.location.reload(true);
   };
   useEffect(() => {
     if (error) {
