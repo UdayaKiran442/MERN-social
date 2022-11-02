@@ -210,7 +210,9 @@ exports.deleteProfile = async (req, res) => {
 
 exports.myProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id).populate("posts");
+    const user = await User.findById(req.user._id).populate(
+      "posts followers following"
+    );
     return res.json(200, {
       user,
     });

@@ -5,8 +5,10 @@ import "./Account.css";
 import { getMyPosts } from "../../Actions/user";
 import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
-import { Avatar, Button, Typography } from "@mui/material";
+import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import { Link } from "react-router-dom";
+import User from "../User/User";
+import { useState } from "react";
 const Account = () => {
   const dispatch = useDispatch();
   const {
@@ -16,6 +18,9 @@ const Account = () => {
   } = useSelector((state) => state.like);
   const { loading, error, posts } = useSelector((state) => state.myPosts);
   const { user } = useSelector((state) => state.user);
+  const [followersToggle, setFollowersToggle] = useState(false);
+  const [followingToggle, setFollowingToggle] = useState(false);
+
   useEffect(() => {
     dispatch(getMyPosts());
   }, [dispatch]);
@@ -64,13 +69,13 @@ const Account = () => {
         ></Avatar>
         <Typography variant="h6">{user.name}</Typography>
         <div>
-          <button>
+          <button onClick={() => setFollowersToggle(!followersToggle)}>
             <Typography>Followers</Typography>
           </button>
           <Typography>{user.followers.length}</Typography>
         </div>
         <div>
-          <button>
+          <button onClick={() => setFollowingToggle(!followingToggle)}>
             <Typography>Following</Typography>
           </button>
           <Typography>{user.following.length}</Typography>
@@ -82,6 +87,49 @@ const Account = () => {
         <Button variant="contained">Logout</Button>
         <Link to={`/update/profile`}>Edit Profile</Link>
         <Link to={`/update/password`}>Change Password</Link>
+        <Button variant="text" style={{ color: "red", margin: "2vmax" }}>
+          Delete my profile
+        </Button>
+        <Dialog
+          open={followersToggle}
+          onClose={() => setFollowersToggle(!followersToggle)}
+        >
+          <div className="DialogBox">
+            <Typography variant="h4">Followers</Typography>
+            {user && user.followers.length > 0 ? (
+              user.followers.map((follower) => (
+                <User
+                  key={follower._id}
+                  userId={follower._id}
+                  name={follower?.name}
+                  avatar={follower.avatar?.url}
+                />
+              ))
+            ) : (
+              <Typography>You have no followers</Typography>
+            )}
+          </div>
+        </Dialog>
+        <Dialog
+          open={followingToggle}
+          onClose={() => setFollowingToggle(!followingToggle)}
+        >
+          <div className="DialogBox">
+            <Typography variant="h4">Following</Typography>
+            {user && user.following.length > 0 ? (
+              user.following.map((follower) => (
+                <User
+                  key={follower._id}
+                  userId={follower._id}
+                  name={follower?.name}
+                  avatar={follower.avatar?.url}
+                />
+              ))
+            ) : (
+              <Typography>You are not following anyone</Typography>
+            )}
+          </div>
+        </Dialog>
       </div>
     </div>
   );
