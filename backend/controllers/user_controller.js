@@ -323,3 +323,25 @@ exports.resetPassword = async (req, res) => {
     });
   }
 };
+
+exports.myPosts = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    const posts = [];
+    for (let i = 0; i < user.posts.length; i++) {
+      const post = await Post.findById(user.posts[i]).populate(
+        "likes comments.user"
+      );
+      posts.push(post);
+    }
+    return res.json(200, {
+      success: true,
+      posts,
+    });
+  } catch (error) {
+    return res.json(500, {
+      success: false,
+      message: error.message,
+    });
+  }
+};

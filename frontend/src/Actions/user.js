@@ -71,3 +71,21 @@ export const getAllUsers = () => async (dispatch) => {
     });
   }
 };
+
+export const getMyPosts = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "myPostsRequests",
+    });
+    const { data } = await apiInstance.get("/myposts");
+    dispatch({
+      type: "myPostsSuccess",
+      payload: data.posts,
+    });
+  } catch (error) {
+    dispatch({
+      type: "myPostsFailure",
+      payload: error.response.data.message,
+    });
+  }
+};
