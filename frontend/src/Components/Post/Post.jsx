@@ -1,5 +1,7 @@
 import { Avatar, Button, Typography, Dialog } from "@mui/material";
 import React from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import "./Post.css";
 import {
@@ -49,7 +51,8 @@ const Post = ({
       alert(error);
     }
     if (message) {
-      alert(message);
+      // alert(message);
+      toast.success(message);
     }
   }, [error, message]);
   useEffect(() => {
@@ -167,6 +170,20 @@ const Post = ({
           )}
         </div>
       </Dialog>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {/* Same as */}
+      <ToastContainer />
     </div>
   );
 };
