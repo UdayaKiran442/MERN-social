@@ -39,6 +39,11 @@ const Account = () => {
       dispatch({ type: "clearMessage" });
     }
   }, [error, message, likeError, dispatch]);
+  const logOutHandler = () => {
+    // dispatch(loadUser());
+    localStorage.setItem("token", null);
+    window.location.reload(true);
+  };
   return loading ? (
     <Loader />
   ) : (
@@ -84,7 +89,9 @@ const Account = () => {
           <Typography>Posts</Typography>
           <Typography>{user.posts.length}</Typography>
         </div>
-        <Button variant="contained">Logout</Button>
+        <Button variant="contained" onClick={logOutHandler}>
+          Logout
+        </Button>
         <Link to={`/update/profile`}>Edit Profile</Link>
         <Link to={`/update/password`}>Change Password</Link>
         <Button variant="text" style={{ color: "red", margin: "2vmax" }}>

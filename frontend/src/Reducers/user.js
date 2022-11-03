@@ -32,6 +32,19 @@ export const userReducer = createReducer(initialState, {
     state.isAuthenticated = false;
   },
 
+  logOutUserRequest: (state) => {
+    state.loading = true;
+  },
+  logOutUserSuccess: (state, action) => {
+    state.loading = false;
+    state.user = null;
+    state.isAuthenticated = false;
+  },
+  logOutUserFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+    state.isAuthenticated = true;
+  },
   loadUserRequest: (state) => {
     state.loading = true;
   },

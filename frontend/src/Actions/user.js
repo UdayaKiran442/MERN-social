@@ -89,3 +89,21 @@ export const getMyPosts = () => async (dispatch) => {
     });
   }
 };
+
+export const logOutUser = (email, password) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "logOutUserRequest",
+    });
+    // const { data } = await apiInstance.post("/login", { email, password });
+    localStorage.setItem("token", null);
+    dispatch({
+      type: "logOutUserSuccess",
+    });
+  } catch (error) {
+    dispatch({
+      type: "logOutUserFailure",
+      payload: error,
+    });
+  }
+};
