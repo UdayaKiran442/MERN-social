@@ -55,3 +55,24 @@ export const deleteCommentOnPost = (id, commentId) => async (dispatch) => {
     });
   }
 };
+
+export const createNewPost = (caption, image) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "newPostRequest",
+    });
+    const { data } = await apiInstance.post(`/posts/upload `, {
+      caption,
+      image,
+    });
+    dispatch({
+      type: "newPostSuccess",
+      payload: data.message,
+    });
+  } catch (error) {
+    dispatch({
+      type: "newPostFailure",
+      payload: error.response.data.message,
+    });
+  }
+};
