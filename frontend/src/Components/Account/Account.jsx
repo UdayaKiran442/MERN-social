@@ -41,7 +41,7 @@ const Account = () => {
   }, [error, message, likeError, dispatch]);
   const logOutHandler = () => {
     // dispatch(loadUser());
-    localStorage.setItem("token", null);
+    localStorage.clear();
     window.location.reload(true);
   };
   return loading ? (
