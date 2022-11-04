@@ -13,11 +13,11 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCommentOnPost, likePost } from "../../Actions/post";
+import { addCommentOnPost, likePost, updatePost } from "../../Actions/post";
 import { useEffect } from "react";
 import User from "../User/User";
 import CommentCard from "../CommentCard/CommentCard";
-// import { getFollowingPosts, getMyPosts } from "../../Actions/user";
+import { getFollowingPosts, getMyPosts } from "../../Actions/user";
 // import { getFollowingPosts } from "../../Actions/user";
 const Post = ({
   postId,
@@ -36,6 +36,8 @@ const Post = ({
   const [likesUser, setLikesUser] = useState(false);
   const [commentValue, setCommentValue] = useState("");
   const [commentToggle, setCommentToggle] = useState(false);
+  const [captionValue, setCaptionValue] = useState("");
+  const [captionToggle, setCaptionToggle] = useState(false);
   const { error, message } = useSelector((state) => state.like);
   const { user } = useSelector((state) => state.user);
   const handleLike = () => {
@@ -51,6 +53,16 @@ const Post = ({
   const addCommentHandler = () => {
     dispatch(addCommentOnPost(postId, commentValue));
     window.location.reload(true);
+  };
+  const updateCaptionHandler = (e) => {
+    e.preventDefault();
+    dispatch(updatePost(captionValue, postId));
+    window.location.reload(true);
+    if (isAccount) {
+      dispatch(getMyPosts());
+    } else {
+      dispatch(getFollowingPosts());
+    }
   };
   useEffect(() => {
     if (error) {
@@ -73,7 +85,11 @@ const Post = ({
     <div className="post">
       <div className="postHeader">
         {isAccount ? (
-          <Button>
+          <Button
+            onClick={() => {
+              setCaptionToggle(!captionToggle);
+            }}
+          >
             <MoreVert />
           </Button>
         ) : null}
@@ -174,6 +190,26 @@ const Post = ({
           ) : (
             <Typography>Not comments yet</Typography>
           )}
+        </div>
+      </Dialog>
+      <Dialog
+        open={captionToggle}
+        onClose={() => setCaptionToggle(!captionToggle)}
+      >
+        <div className="DialogBox">
+          <Typography variant="h4">Update Caption</Typography>
+          <form className="commentForm" onSubmit={updateCaptionHandler}>
+            <input
+              type="text"
+              value={captionValue}
+              onChange={(e) => setCaptionValue(e.target.value)}
+              placeholder="Caption Here"
+              required
+            />
+            <Button type="submit" variant="contained">
+              Update caption
+            </Button>
+          </form>
         </div>
       </Dialog>
       <ToastContainer
