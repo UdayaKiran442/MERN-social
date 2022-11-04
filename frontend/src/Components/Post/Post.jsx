@@ -17,6 +17,7 @@ import { addCommentOnPost, likePost } from "../../Actions/post";
 import { useEffect } from "react";
 import User from "../User/User";
 import CommentCard from "../CommentCard/CommentCard";
+// import { getFollowingPosts, getMyPosts } from "../../Actions/user";
 // import { getFollowingPosts } from "../../Actions/user";
 const Post = ({
   postId,
@@ -41,6 +42,11 @@ const Post = ({
     setLiked(!liked);
     dispatch(likePost(postId));
     // dispatch(getFollowingPosts());
+    // if (isAccount) {
+    //   dispatch(getMyPosts());
+    // } else {
+    //   dispatch(getFollowingPosts());
+    // }
   };
   const addCommentHandler = () => {
     dispatch(addCommentOnPost(postId, commentValue));
