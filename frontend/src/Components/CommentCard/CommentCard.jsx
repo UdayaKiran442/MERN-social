@@ -28,11 +28,16 @@ const CommentCard = ({
         <Typography style={{ minWidth: "6vmax" }}>{name}</Typography>
       </Link>
       <Typography>{comment}</Typography>
-      {isAccount ? (
+      {/* {isAccount ? (
         <Button onClick={deleteCommentHandler}>
           <Delete />
         </Button>
       ) : userId === user._id ? (
+        <Button onClick={deleteCommentHandler}>
+          <Delete />
+        </Button>
+      ) : null} */}
+      {userId === user._id ? (
         <Button onClick={deleteCommentHandler}>
           <Delete />
         </Button>
