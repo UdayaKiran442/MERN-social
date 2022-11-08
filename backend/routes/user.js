@@ -15,7 +15,7 @@ router.put(
   isAuthenticated.isAuthenticated,
   userController.updatePassword
 );
-router.put(
+router.post(
   "/update/profile",
   isAuthenticated.isAuthenticated,
   userController.updateProfile

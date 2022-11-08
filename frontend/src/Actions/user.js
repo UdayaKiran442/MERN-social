@@ -132,3 +132,26 @@ export const registerUser =
       });
     }
   };
+
+export const updateUserProfile = (name, email, avatar) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "updateProfileRequest",
+    });
+    const { data } = await apiInstance.post("/update/profile", {
+      name,
+      email,
+      avatar,
+    });
+    dispatch({
+      type: "updateProfileSuccess",
+      payload: data.user,
+    });
+    localStorage.setItem("token", data.token);
+  } catch (error) {
+    dispatch({
+      type: "updateProfileFailure",
+      payload: error,
+    });
+  }
+};

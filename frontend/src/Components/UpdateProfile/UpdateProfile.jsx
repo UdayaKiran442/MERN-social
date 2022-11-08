@@ -5,8 +5,10 @@ import { Avatar, Button, Typography } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { updateUserProfile } from "../../Actions/user";
 const UpdateProfile = () => {
-  const { loading, error, user } = useSelector((state) => state.user);
+  const { loading, error, user, message } = useSelector((state) => state.user);
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
   const [avatar, setAvatar] = useState("");
@@ -25,12 +27,16 @@ const UpdateProfile = () => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
+    dispatch(updateUserProfile(name, email, avatar));
   };
   useEffect(() => {
     if (error) {
       toast.error(error);
     }
-  }, [error]);
+    if (message) {
+      toast.success(message);
+    }
+  }, [error, message]);
   return (
     <div className="register">
       <form className="registerForm" onSubmit={submitHandler}>
