@@ -9,6 +9,7 @@ import { Home } from "./Components/Home/Home";
 import Account from "./Components/Account/Account";
 import NewPost from "./Components/NewPost/NewPost";
 import Register from "./Components/Register/Register";
+import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -27,6 +28,10 @@ function App() {
         <Route
           path="/account"
           element={isAuthenticated ? <Account /> : <Login />}
+        />
+        <Route
+          path="/update/profile"
+          element={isAuthenticated ? <UpdateProfile /> : <Login />}
         />
         <Route
           path="/newpost"
