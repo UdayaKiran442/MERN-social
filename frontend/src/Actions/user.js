@@ -155,3 +155,26 @@ export const updateUserProfile = (name, email, avatar) => async (dispatch) => {
     });
   }
 };
+
+export const updatePassword =
+  (oldPassword, newPassword) => async (dispatch) => {
+    try {
+      dispatch({
+        type: "updatePasswordRequest",
+      });
+      const { data } = await apiInstance.post("/update/password", {
+        oldPassword,
+        newPassword,
+      });
+      dispatch({
+        type: "updatePasswordSuccess",
+        payload: data.message,
+      });
+      localStorage.setItem("token", data.token);
+    } catch (error) {
+      dispatch({
+        type: "updatePasswordFailure",
+        payload: error,
+      });
+    }
+  };

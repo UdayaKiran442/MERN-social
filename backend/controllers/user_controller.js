@@ -126,12 +126,12 @@ exports.updatePassword = async (req, res) => {
     const isMatch = await user.matchPassword(oldPassword);
     if (!oldPassword || !newPassword) {
       return res.json(400, {
-        message: "Please provide old password || new password",
+        error: "Please provide old password || new password",
       });
     }
     if (!isMatch) {
-      return res.json(404, {
-        message: "Wrong old password",
+      return res.json(400, {
+        error: "Wrong old password",
       });
     }
     user.password = newPassword;
@@ -141,7 +141,7 @@ exports.updatePassword = async (req, res) => {
     });
   } catch (error) {
     return res.json(500, {
-      message: error.message,
+      error: error.message,
     });
   }
 };

@@ -10,7 +10,7 @@ router.get(
   userController.followUser
 );
 router.get("/logout", userController.logOut);
-router.put(
+router.post(
   "/update/password",
   isAuthenticated.isAuthenticated,
   userController.updatePassword

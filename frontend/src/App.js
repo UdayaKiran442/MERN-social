@@ -10,6 +10,7 @@ import Account from "./Components/Account/Account";
 import NewPost from "./Components/NewPost/NewPost";
 import Register from "./Components/Register/Register";
 import UpdateProfile from "./Components/UpdateProfile/UpdateProfile";
+import UpdatePassword from "./Components/UpdatePassword/UpdatePassword";
 function App() {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -40,6 +41,10 @@ function App() {
         <Route
           path="/register"
           element={isAuthenticated ? <Account /> : <Register />}
+        />
+        <Route
+          path="/update/password"
+          element={isAuthenticated ? <UpdatePassword /> : <Login />}
         />
       </Routes>
     </div>
