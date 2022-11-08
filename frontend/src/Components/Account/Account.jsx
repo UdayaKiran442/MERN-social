@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import "./Account.css";
-import { getMyPosts } from "../../Actions/user";
+import { deleteMyProfile, getMyPosts } from "../../Actions/user";
 import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
@@ -14,7 +14,7 @@ const Account = () => {
   const {
     error: likeError,
     message,
-    // loading: deleteLoading,
+    loading: deleteLoading,
   } = useSelector((state) => state.like);
   const { loading, error, posts } = useSelector((state) => state.myPosts);
   const { user } = useSelector((state) => state.user);
@@ -43,6 +43,10 @@ const Account = () => {
     // dispatch(loadUser());
     localStorage.clear();
     window.location.reload(true);
+  };
+  const deleteHandler = () => {
+    localStorage.clear();
+    dispatch(deleteMyProfile());
   };
   return loading ? (
     <Loader />
@@ -96,7 +100,12 @@ const Account = () => {
         </Button>
         <Link to={`/update/profile`}>Edit Profile</Link>
         <Link to={`/update/password`}>Change Password</Link>
-        <Button variant="text" style={{ color: "red", margin: "2vmax" }}>
+        <Button
+          onClick={deleteHandler}
+          disabled={deleteLoading}
+          variant="text"
+          style={{ color: "red", margin: "2vmax" }}
+        >
           Delete my profile
         </Button>
         <Dialog

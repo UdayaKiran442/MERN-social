@@ -178,3 +178,22 @@ export const updatePassword =
       });
     }
   };
+
+export const deleteMyProfile = () => async (dispatch) => {
+  try {
+    dispatch({
+      type: "deleteProfileRequest",
+    });
+    const { data } = await apiInstance.delete("/delete/profile", {});
+    dispatch({
+      type: "deleteProfileSuccess",
+      payload: data.message,
+    });
+    localStorage.setItem("token", data.token);
+  } catch (error) {
+    dispatch({
+      type: "deleteProfileFailure",
+      payload: error,
+    });
+  }
+};
