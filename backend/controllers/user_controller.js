@@ -2,24 +2,29 @@ const Post = require("../models/post");
 const User = require("../models/user");
 const crypto = require("crypto");
 const { sendEmail } = require("../middlewares/sendEmail");
+const cloudinary = require("cloudinary").v2;
 module.exports.register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, avatar } = req.body;
     let user = await User.findOne({ email });
     if (user) {
       return res.json(404, {
         message: "User already exists",
       });
     }
+    const myCloud = await cloudinary.uploader.upload(avatar, {
+      folder: "avatars",
+    });
     user = await User.create({
       name,
       email,
       password,
-      avatar: { public_id: "Sample id", url: "Sample url" },
+      avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
     });
     console.log(user);
     return res.json(200, {
-      message: user,
+      message: "Account created successfully",
+      user,
     });
   } catch (error) {
     return res.json(500, {

@@ -107,3 +107,28 @@ export const logOutUser = (email, password) => async (dispatch) => {
     });
   }
 };
+
+export const registerUser =
+  (name, email, password, avatar) => async (dispatch) => {
+    try {
+      dispatch({
+        type: "registerRequest",
+      });
+      const { data } = await apiInstance.post("/register", {
+        name,
+        email,
+        password,
+        avatar,
+      });
+      dispatch({
+        type: "registerSuccess",
+        payload: data.user,
+      });
+      localStorage.setItem("token", data.token);
+    } catch (error) {
+      dispatch({
+        type: "registerFailure",
+        payload: error,
+      });
+    }
+  };

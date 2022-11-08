@@ -19,6 +19,10 @@ function App() {
     <div className="App">
       {isAuthenticated && <Header />}
       <Routes>
+        <Route
+          path="/login"
+          element={!isAuthenticated ? <Login /> : <Home />}
+        />
         <Route path="/" element={isAuthenticated ? <Home /> : <Login />} />
         <Route
           path="/account"

@@ -2,11 +2,17 @@ import { Avatar, Button, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import "./Register.css";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../../Actions/user";
+import { useEffect } from "react";
+import { toast, ToastContainer } from "react-toastify";
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [avatar, setAvatar] = useState("");
+  const { loading, error } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     const Reader = new FileReader();
@@ -19,8 +25,13 @@ const Register = () => {
   };
   const submitHandler = async (e) => {
     e.preventDefault();
-    console.log(name, email, password, avatar);
+    dispatch(registerUser(name, email, password, avatar));
   };
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+  }, [error]);
   return (
     <div className="register">
       <form className="registerForm" onSubmit={submitHandler}>
@@ -63,8 +74,24 @@ const Register = () => {
         <Link to="/login">
           <Typography>Existing User</Typography>
         </Link>
-        <Button type="submit">Register</Button>
+        <Button type="submit" disabled={loading}>
+          Register
+        </Button>
       </form>
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+      {/* Same as */}
+      <ToastContainer />
     </div>
   );
 };
