@@ -13,11 +13,16 @@ import {
 } from "@mui/icons-material";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addCommentOnPost, likePost, updatePost } from "../../Actions/post";
+import {
+  addCommentOnPost,
+  deletePost,
+  likePost,
+  updatePost,
+} from "../../Actions/post";
 import { useEffect } from "react";
 import User from "../User/User";
 import CommentCard from "../CommentCard/CommentCard";
-import { getFollowingPosts, getMyPosts } from "../../Actions/user";
+import { getFollowingPosts, getMyPosts, loadUser } from "../../Actions/user";
 // import { getFollowingPosts } from "../../Actions/user";
 const Post = ({
   postId,
@@ -64,12 +69,16 @@ const Post = ({
       dispatch(getFollowingPosts());
     }
   };
+  const deletePostHandler = () => {
+    dispatch(deletePost(postId));
+    dispatch(getMyPosts());
+    dispatch(loadUser());
+  };
   useEffect(() => {
     if (error) {
-      alert(error);
+      toast.error(error);
     }
     if (message) {
-      // alert(message);
       toast.success(message);
     }
   }, [error, message]);
@@ -140,7 +149,9 @@ const Post = ({
         >
           <ChatBubbleOutline />
         </Button>
-        <Button>{isDelete ? <DeleteOutline /> : null}</Button>
+        <Button onClick={deletePostHandler}>
+          {isDelete ? <DeleteOutline /> : null}
+        </Button>
       </div>
       <Dialog open={likesUser} onClose={() => setLikesUser(!likesUser)}>
         <div className="DialogBox">
