@@ -3,6 +3,7 @@ import { likeReducer, myPostsReducer } from "./Reducers/post";
 import {
   allUsersReducers,
   postOfFollowingReducer,
+  userProfile,
   userReducer,
 } from "./Reducers/user";
 const store = configureStore({
@@ -12,6 +13,7 @@ const store = configureStore({
     allUsers: allUsersReducers,
     like: likeReducer,
     myPosts: myPostsReducer,
+    profile: userProfile,
   },
 });
 export default store;

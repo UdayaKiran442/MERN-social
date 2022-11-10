@@ -147,7 +147,6 @@ export const updateUserProfile = (name, email, avatar) => async (dispatch) => {
       type: "updateProfileSuccess",
       payload: data.user,
     });
-    localStorage.setItem("token", data.token);
   } catch (error) {
     dispatch({
       type: "updateProfileFailure",
@@ -170,7 +169,6 @@ export const updatePassword =
         type: "updatePasswordSuccess",
         payload: data.message,
       });
-      localStorage.setItem("token", data.token);
     } catch (error) {
       dispatch({
         type: "updatePasswordFailure",
@@ -189,10 +187,27 @@ export const deleteMyProfile = () => async (dispatch) => {
       type: "deleteProfileSuccess",
       payload: data.message,
     });
-    localStorage.setItem("token", data.token);
   } catch (error) {
     dispatch({
       type: "deleteProfileFailure",
+      payload: error,
+    });
+  }
+};
+
+export const getUserProfile = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "userProfileRequest",
+    });
+    const { data } = await apiInstance.get(`/userprofile/${id}`);
+    dispatch({
+      type: "userProfileSuccess",
+      payload: data.user,
+    });
+  } catch (error) {
+    dispatch({
+      type: "userProfileFailure",
       payload: error,
     });
   }
