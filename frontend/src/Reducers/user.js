@@ -124,3 +124,20 @@ export const userProfile = createReducer(initialState, {
     state.error = null;
   },
 });
+
+export const followAndUnfollowUser = createReducer(initialState, {
+  followAndUnfollowRequests: (state) => {
+    state.loading = true;
+  },
+  followAndUnfollowSuccess: (state, action) => {
+    state.loading = false;
+    state.message = action.payload;
+  },
+  followAndUnfollowFailure: (state, action) => {
+    state.loading = false;
+    state.error = action.payload;
+  },
+  clearErrors: (state) => {
+    state.error = null;
+  },
+});

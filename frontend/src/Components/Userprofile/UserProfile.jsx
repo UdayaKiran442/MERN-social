@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { getUserProfile } from "../../Actions/user";
+import { followAndUnfollowProfile, getUserProfile } from "../../Actions/user";
 import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
@@ -18,6 +18,7 @@ const UserProfile = () => {
   } = useSelector((state) => state.like);
   const { loading, error, posts } = useSelector((state) => state.myPosts);
   const { user } = useSelector((state) => state.profile);
+  const { user: loggedInUser } = useSelector((state) => state.user);
   const [followersToggle, setFollowersToggle] = useState(false);
   const [followingToggle, setFollowingToggle] = useState(false);
   const [following, setFollowing] = useState(false);
@@ -42,7 +43,22 @@ const UserProfile = () => {
       dispatch({ type: "clearMessage" });
     }
   }, [error, message, likeError, dispatch]);
-
+  useEffect(() => {
+    if (params.id === loggedInUser?._id) {
+      setMyProfile(true);
+    }
+    if (user) {
+      user.followers.forEach((u) => {
+        if (u._id === loggedInUser._id) {
+          setFollowing(true);
+        }
+      });
+    }
+  }, [params.id, loggedInUser?._id, myProfile, user]);
+  const makeFriends = () => {
+    dispatch(followAndUnfollowProfile(params.id));
+    setFollowing(!following);
+  };
   return loading ? (
     <Loader />
   ) : (
@@ -92,7 +108,11 @@ const UserProfile = () => {
         </div>
 
         {myProfile ? null : (
-          <Button variant="contained">
+          <Button
+            onClick={makeFriends}
+            style={{ background: following ? "red" : "" }}
+            variant="contained"
+          >
             {following ? "Unfollow" : "Follow"}
           </Button>
         )}
