@@ -4,6 +4,7 @@ import {
   allUsersReducers,
   followAndUnfollowUser,
   postOfFollowingReducer,
+  userPosts,
   userProfile,
   userReducer,
 } from "./Reducers/user";
@@ -16,6 +17,7 @@ const store = configureStore({
     myPosts: myPostsReducer,
     profile: userProfile,
     followAndUnfollow: followAndUnfollowUser,
+    userProfilePosts: userPosts,
   },
 });
 export default store;

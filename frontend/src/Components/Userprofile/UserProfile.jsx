@@ -1,7 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { followAndUnfollowProfile, getUserProfile } from "../../Actions/user";
+import {
+  followAndUnfollowProfile,
+  getUserProfile,
+  getUserPosts,
+} from "../../Actions/user";
 import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
 import { Avatar, Button, Dialog, Typography } from "@mui/material";
@@ -16,7 +20,9 @@ const UserProfile = () => {
     message,
     // loading: deleteLoading,
   } = useSelector((state) => state.like);
-  const { loading, error, posts } = useSelector((state) => state.myPosts);
+  const { loading, error, posts } = useSelector(
+    (state) => state.userProfilePosts
+  );
   const { user } = useSelector((state) => state.profile);
   const { user: loggedInUser } = useSelector((state) => state.user);
   const [followersToggle, setFollowersToggle] = useState(false);
@@ -27,6 +33,7 @@ const UserProfile = () => {
 
   useEffect(() => {
     dispatch(getUserProfile(params.id));
+    dispatch(getUserPosts(params.id));
   }, [dispatch, params.id]);
   useEffect(() => {
     if (error) {

@@ -230,3 +230,21 @@ export const followAndUnfollowProfile = (id) => async (dispatch) => {
     });
   }
 };
+
+export const getUserPosts = (id) => async (dispatch) => {
+  try {
+    dispatch({
+      type: "userPostsRequests",
+    });
+    const { data } = await apiInstance.get(`/user/posts/${id}`);
+    dispatch({
+      type: "userPostsSuccess",
+      payload: data.posts,
+    });
+  } catch (error) {
+    dispatch({
+      type: "userPostsFailure",
+      payload: error,
+    });
+  }
+};
