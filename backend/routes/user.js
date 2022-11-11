@@ -40,6 +40,11 @@ router.get(
   isAuthenticated.isAuthenticated,
   userController.getAllUsers
 );
+router.get(
+  "/user/posts/:id",
+  isAuthenticated.isAuthenticated,
+  userController.getUserPosts
+);
 router.post("/forgot/password", userController.forgotPassword);
 router.put("/password/reset/:token", userController.resetPassword);
 router.get("/myposts", isAuthenticated.isAuthenticated, userController.myPosts);

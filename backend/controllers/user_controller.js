@@ -361,3 +361,31 @@ exports.myPosts = async (req, res) => {
     });
   }
 };
+
+exports.getUserPosts = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.json(404, {
+        success: false,
+        message: "User not found",
+      });
+    }
+    const posts = [];
+    for (let i = 0; i < user.posts.length; i++) {
+      const post = await Post.findById(user.posts[i]).populate(
+        "likes owner comments.user"
+      );
+      posts.push(post);
+    }
+    return res.json(200, {
+      success: true,
+      posts,
+    });
+  } catch (error) {
+    return res.json(500, {
+      success: false,
+      message: error.message,
+    });
+  }
+};
